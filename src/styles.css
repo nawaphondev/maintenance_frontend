@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap");
+@import 'material-icons/iconfont/material-icons.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+  font-family: "IBM Plex Sans Thai", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.primary-color {
+  background-color: rgb(60, 165, 36);
+}
+
+.secondary-color {
+  background-color: rgb(149, 210, 179);
+}
+
+html::-webkit-scrollbar {
+  width: 1em;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: transparent !important;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: rgb(99, 99, 99);
+  width: 0.5em;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "IBM Plex Sans Thai", sans-serif;
+}

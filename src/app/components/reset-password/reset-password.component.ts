@@ -14,51 +14,89 @@ import Swal from 'sweetalert2';
 })
 export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
+  userId: string | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
+    // สร้างฟอร์ม resetPasswordForm ด้วยฟิลด์ oldPassword และ newPassword
     this.resetPasswordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      oldPassword: ['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]]
     });
+
+    // ดึง userId จาก JWT Token ที่เก็บไว้ใน localStorage
+    const token = localStorage.getItem('token');
+    if (token) {
+      const decodedToken = this.decodeJwt(token);
+      if (decodedToken && decodedToken.userId) {
+        this.userId = decodedToken.userId;
+      } else {
+        console.error('Invalid token');
+        Swal.fire('ข้อผิดพลาด', 'ไม่สามารถยืนยันตัวตนได้ กรุณาเข้าสู่ระบบใหม่', 'error');
+      }
+    }
+  }
+
+  /**
+   * ฟังก์ชันถอดรหัส JWT Token
+   */
+  decodeJwt(token: string): any {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error('Error decoding token', error);
+      return null;
+    }
   }
 
   /**
    * รีเซ็ตรหัสผ่านโดยใช้ฟอร์ม resetPasswordForm
    * ถ้าฟอร์มไม่ถูกต้องจะแสดงข้อผิดพลาด
-   * ถ้าการส่งอีเมลสำเร็จจะแสดงข้อความสำเร็จ
-   * ถ้าการส่งอีเมลไม่สำเร็จจะแสดงข้อผิดพลาด
+   * ถ้าการเปลี่ยนรหัสผ่านสำเร็จจะแสดงข้อความสำเร็จ
+   * ถ้าการเปลี่ยนรหัสผ่านไม่สำเร็จจะแสดงข้อผิดพลาด
    */
   onSubmit(): void {
     if (this.resetPasswordForm.invalid) {
+      // แสดงข้อความแจ้งเตือนเมื่อฟอร์มไม่ถูกต้อง
       Swal.fire('ข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ถูกต้อง', 'error');
       return;
     }
 
-    const { email } = this.resetPasswordForm.value;
+    if (!this.userId) {
+      Swal.fire('ข้อผิดพลาด', 'ไม่สามารถยืนยันตัวตนได้ กรุณาเข้าสู่ระบบใหม่', 'error');
+      return;
+    }
 
+    const { oldPassword, newPassword } = this.resetPasswordForm.value;
+
+    // แสดงคำยืนยันก่อนเปลี่ยนรหัสผ่าน
     Swal.fire({
-      title: 'ยืนยันการรีเซ็ตรหัสผ่าน?',
-      text: `คุณต้องการส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมล ${email} หรือไม่`,
+      title: 'ยืนยันการเปลี่ยนรหัสผ่าน?',
+      text: 'คุณต้องการเปลี่ยนรหัสผ่านใหม่หรือไม่?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'ใช่, ส่งลิงก์',
+      confirmButtonText: 'ใช่, เปลี่ยนรหัสผ่าน',
       cancelButtonText: 'ยกเลิก',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.authService.resetPassword(email).subscribe(
+        // เรียกใช้บริการ authService เพื่อเปลี่ยนรหัสผ่าน
+        this.authService.resetPassword(this.userId as string, oldPassword, newPassword).subscribe(
           () => {
-            Swal.fire('สำเร็จ', 'ลิงก์รีเซ็ตรหัสผ่านได้ถูกส่งไปยังอีเมลของคุณแล้ว', 'success');
+            // แสดงข้อความสำเร็จเมื่อเปลี่ยนรหัสผ่านได้สำเร็จ
+            Swal.fire('สำเร็จ', 'รหัสผ่านของคุณได้ถูกเปลี่ยนเรียบร้อยแล้ว', 'success');
           },
           (error) => {
-            let errorMessage = 'ไม่สามารถส่งลิงก์รีเซ็ตรหัสผ่านได้ กรุณาลองใหม่';
+            // จัดการข้อผิดพลาดและแสดงข้อความแจ้งเตือนเมื่อไม่สามารถเปลี่ยนรหัสผ่านได้
+            let errorMessage = 'ไม่สามารถเปลี่ยนรหัสผ่านได้ กรุณาลองใหม่';
             if (error && error.error) {
-              try {
-                const parsedError = JSON.parse(error.error);
-                if (parsedError.error) {
-                  errorMessage = parsedError.error;
-                }
-              } catch (e) {
-                // ถ้าไม่สามารถแปลงข้อความ error ได้ ให้ใช้ข้อความเริ่มต้น
-              }
+              errorMessage = typeof error.error === 'string' ? error.error : error.error.message || errorMessage;
             }
             Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
           }

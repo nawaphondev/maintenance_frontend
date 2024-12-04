@@ -8,6 +8,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { RouterModule } from '@angular/router';
     LoginComponent,
     AppComponent,
     RouterModule.forRoot(routes),
+    SweetAlert2Module.forRoot()
   ],
 })
 export class AppModule { }

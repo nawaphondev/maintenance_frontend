@@ -1,1 +1,50 @@
-<p>dashboard works!</p>
+<div class="min-h-screen bg-gray-100 flex">
+    <!-- Sidebar -->
+    <aside class="w-1/4 p-5 bg-blue-900 text-white">
+      <nav>
+        <ul class="space-y-4">
+          <li><a routerLink="/dashboard/overview" class="block">Overview</a></li>
+          <li><a routerLink="/dashboard/users" class="block">User Management</a></li>
+          <li><a routerLink="/dashboard/production-lines" class="block">Production Lines</a></li>
+          <li><a routerLink="/dashboard/machines" class="block">Machines</a></li>
+          <li><a routerLink="/dashboard/maintenance-records" class="block">Maintenance Records</a></li>
+          <li><a routerLink="/dashboard/reports" class="block">Reports</a></li>
+          <li><a routerLink="/dashboard/notifications" class="block">Notifications</a></li>
+        </ul>
+      </nav>
+    </aside>
+  
+    <!-- Main Content -->
+    <main class="flex-1 p-8">
+      <header class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold">Dashboard Overview</h1>
+        <button (click)="logout()" class="bg-red-500 text-white px-4 py-2 rounded">Logout</button>
+      </header>
+  
+      <!-- Overview Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded shadow">
+          <h2 class="text-lg font-semibold">Total Users</h2>
+          <p class="text-4xl font-bold">{{ totalUsers }}</p>
+        </div>
+        <div class="bg-white p-6 rounded shadow">
+          <h2 class="text-lg font-semibold">Total Machines</h2>
+          <p class="text-4xl font-bold">{{ totalMachines }}</p>
+        </div>
+        <div class="bg-white p-6 rounded shadow">
+          <h2 class="text-lg font-semibold">Maintenance Records</h2>
+          <p class="text-4xl font-bold">{{ totalMaintenanceRecords }}</p>
+        </div>
+      </div>
+  
+      <!-- Graph Example -->
+      <div class="mt-10">
+        <h2 class="text-2xl font-bold mb-5">Maintenance Summary</h2>
+        <div class="bg-white p-6 rounded shadow">
+          <!-- Graph จะอยู่ตรงนี้ -->
+          <canvas id="maintenanceChart"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+  

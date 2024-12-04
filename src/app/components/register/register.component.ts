@@ -6,8 +6,8 @@ import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  standalone: true,
   selector: 'app-register',
+  standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
@@ -49,30 +49,29 @@ export class RegisterComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         const { email, username, password, confirmPassword } = this.registerForm.value;
-        const user = { email, username, password, confirmPassword };
   
-        this.authService.register(user).subscribe(
+        this.authService.register(username, email, password, confirmPassword).subscribe(
           (response) => {
             Swal.fire('ลงทะเบียนผู้ใช้สำเร็จ', 'เมื่อคลิ๊ก "OK" ระบบจะนำคุณไปยังหน้าเข้าสู่ระบบ', 'success').then(() => {
               this.router.navigate(['/login']);
             });
           },
           (error) => {
+            let errorMessage = 'การลงทะเบียนล้มเหลว กรุณาลองใหม่';
+  
             if (error.status === 400 && error.error) {
-              try {
-                const parsedError = JSON.parse(error.error);
-                if (parsedError.error) {
-                  Swal.fire('ข้อผิดพลาด', parsedError.error, 'error');
-                }
-              } catch (e) {
-                Swal.fire('ข้อผิดพลาด', 'การลงทะเบียนล้มเหลว กรุณาลองใหม่', 'error');
+              // แสดงข้อความข้อผิดพลาดที่มาจาก Backend หากมี
+              if (typeof error.error === 'string') {
+                errorMessage = error.error;
+              } else if (error.error.message) {
+                errorMessage = error.error.message;
               }
-            } else {
-              Swal.fire('ข้อผิดพลาด', 'การลงทะเบียนล้มเหลว กรุณาลองใหม่', 'error');
             }
+            Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
           }
         );
       }
     });
   }
-}  
+  
+}

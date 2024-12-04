@@ -20,59 +20,39 @@ export class LoginComponent {
     private router: Router,
     private fb: FormBuilder
   ) {
+    // สร้างฟอร์มการเข้าสู่ระบบ
     this.loginForm = this.fb.group({
-      emailOrUsername: ['', Validators.required],
+      emailOrUsername: ['', Validators.required],  // ตรวจสอบว่ามีชื่อฟิลด์ตรงกับที่ใช้ใน Backend
       password: ['', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe(
+      const { emailOrUsername, password } = this.loginForm.value;
+
+      // เรียกใช้ AuthService เพื่อเข้าสู่ระบบ
+      this.authService.login(emailOrUsername, password).subscribe(
         (response) => {
           localStorage.setItem('token', response.token);
-          Swal.fire('เข้าสู่ระบบสำเร็จ', 'เมื่อคลิ๊ก "OK" ระบบจะนำคุณไปยังหน้าหลัก', 'success').then(() => {
+          Swal.fire('เข้าสู่ระบบสำเร็จ', 'เมื่อคลิ๊ก "OK" ระบบจะนำคุณไปยัง Dashboard', 'success').then(() => {
             this.router.navigate(['/dashboard']);
           });
         },
         (error) => {
-          // ใช้ข้อความจากเซิร์ฟเวอร์
-          const errorMessage = error.error?.error || 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูล';
-          const remainingTime = error.error?.remainingTime;
-  
-          if (remainingTime) {
-            // แสดงข้อความพร้อมเวลานับถอยหลัง
-            let timeLeft = remainingTime;
-  
-            const interval = setInterval(() => {
-              if (timeLeft > 0) {
-                Swal.update({
-                  title: 'ข้อผิดพลาด',
-                  html: `ล็อกอินล้มเหลวหลายครั้งเกินไป<br>กรุณาลองใหม่ใน <b>${timeLeft}</b> วินาที`,
-                  icon: 'error',
-                  showConfirmButton: false
-                });
-                timeLeft--;
-              } else {
-                clearInterval(interval);
-                Swal.fire('พร้อมลองใหม่', 'คุณสามารถลองเข้าสู่ระบบได้แล้ว', 'info');
-              }
-            }, 1000);
-  
-            Swal.fire({
-              title: 'ข้อผิดพลาด',
-              html: `ล็อกอินล้มเหลวหลายครั้งเกินไป<br>กรุณาลองใหม่ใน <b>${timeLeft}</b> วินาที`,
-              icon: 'error',
-              showConfirmButton: false,
-              willClose: () => clearInterval(interval) // หยุดการนับถอยหลังเมื่อผู้ใช้ปิดแจ้งเตือน
-            });
-          } else {
-            Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
+          let errorMessage = 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูล';
+          if (error.status === 400 && error.error) {
+            if (typeof error.error === 'string') {
+              errorMessage = error.error;
+            } else if (error.error.message) {
+              errorMessage = error.error.message;
+            }
           }
+          Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
         }
       );
     } else {
       Swal.fire('ข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
     }
-  }  
+  }
 }

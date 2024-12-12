@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  passwordVisible: boolean = false; // สถานะการมองเห็นรหัสผ่าน
 
   constructor(
     private authService: AuthService,
@@ -22,9 +23,13 @@ export class LoginComponent {
   ) {
     // สร้างฟอร์มการเข้าสู่ระบบ
     this.loginForm = this.fb.group({
-      emailOrUsername: ['', Validators.required],  // ตรวจสอบว่ามีชื่อฟิลด์ตรงกับที่ใช้ใน Backend
+      emailOrUsername: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+
+  togglePasswordVisibility(): void {
+    this.passwordVisible = !this.passwordVisible;
   }
 
   onSubmit(): void {

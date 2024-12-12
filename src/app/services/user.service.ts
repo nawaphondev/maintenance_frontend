@@ -1,39 +1,25 @@
-// src/app/services/user.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = environment.apiUrl; // ใช้ URL จาก environment
+  private apiUrl = `${environment.apiUrl}/users`; // ใช้ค่า URL จาก environment
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // ลงทะเบียนผู้ใช้
-  register(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, userData);
+  // ดึงข้อมูลผู้ใช้ปัจจุบัน
+  getCurrentUser(): Observable<any> {
+    const token = localStorage.getItem('authToken'); // ดึง JWT จาก Local Storage
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/me`, { headers });
   }
 
-  // เข้าสู่ระบบผู้ใช้
-  login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, credentials);
-  }
-
-  // รีเซ็ตรหัสผ่านของผู้ใช้
-  resetPassword(userId: string, passwords: any): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/auth/reset-password/${userId}`, passwords);
-  }
-
-  // รีเซ็ตรหัสผ่านโดยแอดมิน
-  resetPasswordByAdmin(userId: string, newPassword: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/auth/reset-password/${userId}`, { newPassword });
-  }
-
-  // ดึงข้อมูลผู้ใช้ทั้งหมด (เฉพาะแอดมิน)
-  getUsers(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/auth/users`);
+  // ดึงรูปภาพโปรไฟล์ผ่าน Endpoint (หากใช้บริการไฟล์รูปภาพ)
+  getProfilePicture(userId: string): string {
+    return `${this.apiUrl}/${userId}/profile-picture`;
   }
 }

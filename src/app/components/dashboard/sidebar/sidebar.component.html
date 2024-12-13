@@ -1,0 +1,99 @@
+<aside class="w-64 h-screen bg-gradient-to-b from-green-700 to-green-500 text-white flex flex-col shadow-lg">
+  <!-- โลโก้ -->
+  <div class="m-8 flex justify-center">
+    <a routerLink="/dashboard/overview">
+      <img
+        src="https://image.makewebeasy.net/makeweb/m_1920x0/7L4OqPuEK/DefaultData/LOGO_Shizen_png_160x160.png"
+        alt="Logo"
+        class="h-20 w-auto bg-white rounded-md shadow-md"
+      />
+    </a>
+  </div>
+
+  <!-- เมนู -->
+  <nav class="flex-1">
+    <ul class="space-y-4">
+      <li>
+        <a
+          routerLink="/dashboard/overview"
+          routerLinkActive="bg-white text-green-700 font-bold"
+          class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
+        >
+          <span class="material-icons">dashboard</span>
+          <span>Overview</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/dashboard/user-management"
+          routerLinkActive="bg-white text-green-700 font-bold"
+          class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
+        >
+          <span class="material-icons">people</span>
+          <span>User Management</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/dashboard/production-lines"
+          routerLinkActive="bg-white text-green-700 font-bold"
+          class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
+        >
+          <span class="material-icons">precision_manufacturing</span>
+          <span>Production Lines</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/dashboard/machines"
+          routerLinkActive="bg-white text-green-700 font-bold"
+          class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
+        >
+          <span class="material-icons">settings</span>
+          <span>Machines</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/dashboard/maintenance-records"
+          routerLinkActive="bg-white text-green-700 font-bold"
+          class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
+        >
+          <span class="material-icons">build_circle</span>
+          <span>Maintenance Records</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/dashboard/reports"
+          routerLinkActive="bg-white text-green-700 font-bold"
+          class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
+        >
+          <span class="material-icons">bar_chart</span>
+          <span>Reports</span>
+        </a>
+      </li>
+      <li>
+        <a
+          routerLink="/dashboard/notifications"
+          routerLinkActive="bg-white text-green-700 font-bold"
+          class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
+        >
+          <span class="material-icons">notifications</span>
+          <span>Notifications</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- ปุ่ม Logout -->
+  <div class="p-4">
+    <button
+      (click)="logout()"
+      class="w-full bg-white text-red-700 hover:bg-red-700 hover:text-white py-3 rounded-lg font-bold flex items-center justify-center space-x-2 transition-all duration-300"
+    >
+      <span class="material-icons">logout</span>
+      <span>Logout</span>
+    </button>
+  </div>
+</aside>

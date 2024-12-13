@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap");
 @import 'material-icons/iconfont/material-icons.css';
+@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 @tailwind base;
 @tailwind components;

@@ -25,8 +25,8 @@ export class RegisterComponent {
   registerForm: FormGroup;
   passwordVisible: boolean = false;
   confirmPasswordVisible: boolean = false;
-  imageUrl: string | ArrayBuffer | null = null; // สำหรับเก็บ URL ของรูปภาพที่อัปโหลด
-  selectedFile: File | null = null; // เก็บไฟล์ที่เลือก
+  imageUrl: string | ArrayBuffer | null = null; // แสดงภาพตัวอย่าง
+  selectedFile: File | null = null; // ไฟล์รูปภาพที่เลือก
 
   constructor(
     private authService: AuthService,
@@ -64,6 +64,13 @@ export class RegisterComponent {
     const input = event.target as HTMLInputElement;
     if (input?.files?.[0]) {
       const file = input.files[0];
+
+      // ตรวจสอบประเภทไฟล์
+      if (!file.type.startsWith('image/')) {
+        Swal.fire('ข้อผิดพลาด', 'กรุณาเลือกไฟล์รูปภาพที่ถูกต้อง', 'error');
+        return;
+      }
+
       const reader = new FileReader();
 
       reader.onload = () => {
@@ -88,44 +95,44 @@ export class RegisterComponent {
     }
 
     Swal.fire({
-      title: 'ยืนยันการลงทะเบียน?',
-      text: 'คุณต้องการดำเนินการลงทะเบียนหรือไม่',
-      icon: 'question',
+      title: 'ยืนยันการลงทะเบียน',
+      text: 'คุณต้องการลงทะเบียนหรือไม่?',
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'ใช่, ลงทะเบียน',
+      confirmButtonText: 'ยืนยัน',
       cancelButtonText: 'ยกเลิก',
     }).then((result) => {
       if (result.isConfirmed) {
-        const { email, username, password, confirmPassword } =
-          this.registerForm.value;
-
         const formData = new FormData();
-        formData.append('username', username);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('confirmPassword', confirmPassword);
-        formData.append('avatar', this.selectedFile as Blob);
+        formData.append('username', this.registerForm.get('username')?.value);
+        formData.append('email', this.registerForm.get('email')?.value);
+        formData.append('password', this.registerForm.get('password')?.value);
+        formData.append(
+          'confirmPassword',
+          this.registerForm.get('confirmPassword')?.value
+        );
+
+        // ตรวจสอบก่อน append file
+        if (this.selectedFile) {
+          formData.append('profile_picture', this.selectedFile);
+        } else {
+          Swal.fire('ข้อผิดพลาด', 'กรุณาอัปโหลดรูปภาพโปรไฟล์', 'error');
+          return;
+        }
 
         this.authService.registerWithAvatar(formData).subscribe(
           (response) => {
             Swal.fire(
-              'ลงทะเบียนผู้ใช้สำเร็จ',
-              'เมื่อคลิ๊ก "OK" ระบบจะนำคุณไปยังหน้าเข้าสู่ระบบ',
+              'ลงทะเบียนสำเร็จ',
+              'ระบบจะนำคุณไปยังหน้าล็อกอิน',
               'success'
             ).then(() => {
               this.router.navigate(['/login']);
             });
           },
           (error) => {
-            let errorMessage = 'การลงทะเบียนล้มเหลว กรุณาลองใหม่';
-
-            if (error.status === 400 && error.error) {
-              if (typeof error.error === 'string') {
-                errorMessage = error.error;
-              } else if (error.error.message) {
-                errorMessage = error.error.message;
-              }
-            }
+            const errorMessage =
+              error?.error?.error || 'การลงทะเบียนล้มเหลว กรุณาลองใหม่';
             Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
           }
         );

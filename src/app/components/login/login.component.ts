@@ -2,7 +2,13 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,7 +16,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule],
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -23,8 +29,8 @@ export class LoginComponent {
   ) {
     // สร้างฟอร์มการเข้าสู่ระบบ
     this.loginForm = this.fb.group({
-      emailOrUsername: ['', Validators.required],
-      password: ['', Validators.required]
+      usernameOrEmail: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
@@ -34,24 +40,27 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const { emailOrUsername, password } = this.loginForm.value;
+      const credentials = this.loginForm.value;
 
-      // เรียกใช้ AuthService เพื่อเข้าสู่ระบบ
-      this.authService.login(emailOrUsername, password).subscribe(
+      this.authService.login(credentials).subscribe(
         (response) => {
           localStorage.setItem('token', response.token);
-          Swal.fire('เข้าสู่ระบบสำเร็จ', 'เมื่อคลิ๊ก "OK" ระบบจะนำคุณไปยัง Dashboard', 'success').then(() => {
+          Swal.fire(
+            'เข้าสู่ระบบสำเร็จ',
+            'เมื่อคลิ๊ก "OK" ระบบจะนำคุณไปยัง Dashboard',
+            'success'
+          ).then(() => {
             this.router.navigate(['/dashboard']);
           });
         },
         (error) => {
+          console.error('Login error:', error); // Debugging
           let errorMessage = 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูล';
           if (error.status === 400 && error.error) {
-            if (typeof error.error === 'string') {
-              errorMessage = error.error;
-            } else if (error.error.message) {
-              errorMessage = error.error.message;
-            }
+            errorMessage =
+              typeof error.error === 'string'
+                ? error.error
+                : error.error.message || errorMessage;
           }
           Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
         }

@@ -9,7 +9,8 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  private authUrl = `${environment.apiUrl}/auth`;; // Replace with your API endpoint
+  private authUrl = `${environment.apiUrl}/users`;
+
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
 
   constructor(private http: HttpClient, private router: Router) {
@@ -18,24 +19,48 @@ export class AuthService {
 
   /**
    * Login user
-   * @param credentials { email: string, password: string }
+   * @param credentials { emailOrUsername: string, password: string }
    * @returns Observable
    */
-  login(credentials: { email: string; password: string }): Observable<any> {
+
+  registerWithAvatar(formData: FormData): Observable<any> {
+    return this.http.post(`${this.authUrl}/register`, formData);
+  }
+
+  login(credentials: { emailOrUsername: string; password: string }): Observable<any> {
     return this.http.post(`${this.authUrl}/login`, credentials).pipe(
       tap((response: any) => {
         localStorage.setItem('token', response.token);
-        this.isLoggedInSubject.next(true);
       })
+    );
+  }
+
+  getDashboardSummary(): Observable<any> {
+    return this.http.get(`${this.authUrl}/dashboard-summary`);
+  }
+
+  resetPassword(
+    userId: string,
+    oldPassword: string,
+    newPassword: string
+  ): Observable<any> {
+    const payload = { oldPassword, newPassword };
+    return this.http.put(
+      `${this.authUrl}/users/${userId}/reset-password`,
+      payload
     );
   }
 
   /**
    * Register user
-   * @param userDetails { email, password, username, etc. }
+   * @param userDetails { username, email, password }
    * @returns Observable
    */
-  register(userDetails: any): Observable<any> {
+  register(userDetails: {
+    username: string;
+    email: string;
+    password: string;
+  }): Observable<any> {
     return this.http.post(`${this.authUrl}/register`, userDetails);
   }
 
@@ -70,7 +95,6 @@ export class AuthService {
   private checkToken(): void {
     const token = localStorage.getItem('token');
     if (token) {
-      // Optionally validate token with backend
       this.isLoggedInSubject.next(true);
     } else {
       this.isLoggedInSubject.next(false);

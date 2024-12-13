@@ -11,7 +11,7 @@
     </div>
 
     <!-- Registration Form Section -->
-    <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+    <div class="lg:w-1/2 xl:w-5/12 p-6  sm:p-12">
       <div>
         <img
           src="https://image.makewebeasy.net/makeweb/m_1920x0/7L4OqPuEK/DefaultData/LOGO_Shizen_png_160x160.png"
@@ -21,6 +21,27 @@
       </div>
       <div class="mt-12 flex flex-col items-center">
         <h1 class="text-2xl xl:text-3xl font-extrabold">ลงทะเบียน</h1>
+
+        <!-- Avatar Upload Section -->
+        <div class="flex flex-col items-center space-y-4 mt-6">
+          <label for="file-upload" class="cursor-pointer">
+            <img
+              [src]="imageUrl ? imageUrl : 'https://via.placeholder.com/150'"
+              alt="User avatar"
+              class="h-32 w-32 rounded-full border-2 border-primary object-cover"
+            />
+          </label>
+          <input
+            type="file"
+            id="file-upload"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+            class="hidden"
+          />
+          <p class="text-sm">คลิ๊กเพื่ออัปโหลดรูปภาพ</p>
+        </div>
+
+        <!-- Registration Form -->
         <form
           [formGroup]="registerForm"
           (ngSubmit)="onSubmit()"
@@ -36,20 +57,10 @@
                 formControlName="username"
                 placeholder="ชื่อผู้ใช้ *"
                 aria-label="ชื่อผู้ใช้"
-                aria-required="true"
-                [attr.aria-invalid]="
-                  registerForm.get('username')?.invalid ? true : null
-                "
                 required
               />
             </div>
-            <div
-              *ngIf="
-                registerForm.get('username')?.invalid &&
-                registerForm.get('username')?.touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
+            <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="text-red-500 text-sm mt-1">
               กรุณากรอกชื่อผู้ใช้ที่มีความยาวอย่างน้อย 3 ตัวอักษร
             </div>
 
@@ -61,21 +72,10 @@
                 type="email"
                 formControlName="email"
                 placeholder="อีเมล *"
-                aria-label="อีเมล"
-                aria-required="true"
-                [attr.aria-invalid]="
-                  registerForm.get('email')?.invalid ? true : null
-                "
                 required
               />
             </div>
-            <div
-              *ngIf="
-                registerForm.get('email')?.invalid &&
-                registerForm.get('email')?.touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
+            <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
               กรุณากรอกอีเมลที่ถูกต้อง
             </div>
 
@@ -87,11 +87,6 @@
                 formControlName="password"
                 class="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                 placeholder="รหัสผ่าน *"
-                aria-label="รหัสผ่าน"
-                aria-required="true"
-                [attr.aria-invalid]="
-                  registerForm.get('password')?.invalid ? true : null
-                "
                 required
               />
               <button
@@ -99,18 +94,10 @@
                 class="absolute inset-y-0 right-3 flex items-center text-gray-500 focus:outline-none"
                 (click)="togglePasswordVisibility('password')"
               >
-                <span class="material-icons">
-                  {{ passwordVisible ? "visibility" : "visibility_off" }}
-                </span>
+                <span class="material-icons">{{ passwordVisible ? 'visibility' : 'visibility_off' }}</span>
               </button>
             </div>
-            <div
-              *ngIf="
-                registerForm.get('password')?.invalid &&
-                registerForm.get('password')?.touched
-              "
-              class="text-red-500 text-sm mt-1"
-            >
+            <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
               รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร
             </div>
 
@@ -122,9 +109,6 @@
                 formControlName="confirmPassword"
                 class="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                 placeholder="ยืนยันรหัสผ่าน *"
-                aria-label="ยืนยันรหัสผ่าน"
-                aria-required="true"
-                [attr.aria-invalid]="registerForm.get('confirmPassword')?.invalid || registerForm.errors?.['mismatch'] ? true : null"
                 required
               />
               <button
@@ -132,15 +116,10 @@
                 class="absolute inset-y-0 right-3 flex items-center text-gray-500 focus:outline-none"
                 (click)="togglePasswordVisibility('confirmPassword')"
               >
-                <span class="material-icons">
-                  {{ confirmPasswordVisible ? "visibility" : "visibility_off" }}
-                </span>
+                <span class="material-icons">{{ confirmPasswordVisible ? 'visibility' : 'visibility_off' }}</span>
               </button>
             </div>
-            <div
-              *ngIf="registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched"
-              class="text-red-500 text-sm mt-1"
-            >
+            <div *ngIf="registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched" class="text-red-500 text-sm mt-1">
               รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน
             </div>
 
@@ -148,7 +127,6 @@
             <button
               class="mt-5 tracking-wide font-semibold bg-blue-500 text-gray-100 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
               [disabled]="registerForm.invalid"
-              aria-label="ยืนยันการลงทะเบียน"
             >
               <span class="material-icons">person_add</span>
               <span class="ml-3">ยืนยันการลงทะเบียน</span>
@@ -158,11 +136,7 @@
 
         <!-- Link to Login -->
         <div class="mt-6 flex justify-center items-center">
-          <a
-            routerLink="/login"
-            class="text-sm text-gray-700 hover:underline hover:text-green-500 cursor-pointer"
-            aria-label="กลับไปที่หน้าล็อกอิน"
-          >
+          <a routerLink="/login" class="text-sm text-gray-700 hover:underline hover:text-green-500 cursor-pointer">
             ฉันมีบัญชีผู้ใช้อยู่แล้ว / เข้าสู่ระบบ
           </a>
         </div>

@@ -7,19 +7,35 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = `${environment.apiUrl}/users`; // ใช้ค่า URL จาก environment
+  private apiUrl = `${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient) {}
 
-  // ดึงข้อมูลผู้ใช้ปัจจุบัน
-  getCurrentUser(): Observable<any> {
-    const token = localStorage.getItem('authToken'); // ดึง JWT จาก Local Storage
+  // Fetch all users
+  getAllUsers(): Observable<any> {
+    const token = localStorage.getItem('authToken');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/me`, { headers });
+    return this.http.get<any>(`${this.apiUrl}/all`, { headers });
   }
 
-  // ดึงรูปภาพโปรไฟล์ผ่าน Endpoint (หากใช้บริการไฟล์รูปภาพ)
-  getProfilePicture(userId: string): string {
-    return `${this.apiUrl}/${userId}/profile-picture`;
+  // Create a new user
+  createUser(userData: any): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<any>(`${this.apiUrl}/create`, userData, { headers });
+  }  
+
+  // Update an existing user
+  updateUser(userId: string, userData: any): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<any>(`${this.apiUrl}/${userId}`, userData, { headers });
+  }
+
+  // Delete a user
+  deleteUser(userId: string): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<any>(`${this.apiUrl}/${userId}`, { headers });
   }
 }

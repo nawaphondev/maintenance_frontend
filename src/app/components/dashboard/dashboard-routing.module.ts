@@ -14,7 +14,6 @@ const routes: Routes = [
     path: '',
     component: DashboardComponent,
     children: [
-      { path: '', redirectTo: 'overview', pathMatch: 'full' },
       { path: 'overview', component: OverviewComponent },
       { path: 'user-management', component: UserManagementComponent },
       { path: 'production-lines', component: ProductionLinesComponent },
@@ -22,6 +21,7 @@ const routes: Routes = [
       { path: 'maintenance-records', component: MaintenanceRecordsComponent },
       { path: 'reports', component: ReportsComponent },
       { path: 'notifications', component: NotificationsComponent },
+      { path: '', redirectTo: 'overview', pathMatch: 'full' },
     ],
   },
 ];

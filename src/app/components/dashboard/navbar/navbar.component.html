@@ -1,0 +1,20 @@
+<nav class="bg-green-800 text-white p-4 shadow-md">
+    <div class="container mx-auto flex justify-between items-center">
+      <a routerLink="/dashboard/overview" class="text-lg font-bold">Dashboard</a>
+      <ul class="flex space-x-4">
+        <li>
+          <a routerLink="/dashboard/overview" class="hover:underline">Overview</a>
+        </li>
+        <li>
+          <a routerLink="/dashboard/user-management" class="hover:underline">User Management</a>
+        </li>
+        <li>
+          <a routerLink="/dashboard/reports" class="hover:underline">Reports</a>
+        </li>
+        <li>
+          <button (click)="logout()" class="hover:underline">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  

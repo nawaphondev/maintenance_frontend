@@ -11,31 +11,42 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all users
   getAllUsers(): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/all`, { headers });
+    return this.http.get(`${this.apiUrl}/all`, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
-  // Create a new user
-  createUser(userData: any): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.post<any>(`${this.apiUrl}/create`, userData, { headers });
-  }  
-
-  // Update an existing user
-  updateUser(userId: string, userData: any): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put<any>(`${this.apiUrl}/${userId}`, userData, { headers });
+  getUserById(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`);
   }
 
-  // Delete a user
-  deleteUser(userId: string): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete<any>(`${this.apiUrl}/${userId}`, { headers });
+  // อัปเดตข้อมูลผู้ใช้
+  updateUser(id: number, formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token'); // ดึง Token จาก Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // ใส่ Token ใน Header
+    });
+
+    return this.http.put(`${this.apiUrl}/${id}`, formData, { headers });
+  }
+
+  createUser(user: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/create`, user, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
   }
 }

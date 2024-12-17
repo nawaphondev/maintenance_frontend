@@ -1,0 +1,17 @@
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    width: 100%;
+  }
+  
+  a, button {
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  a:hover, button:hover {
+    text-decoration: underline;
+  }
+  

@@ -1,10 +1,15 @@
-<div class="flex h-screen">
+<div class="flex flex-col h-screen">
+  <!-- Navbar -->
+  
+  <!-- Main Content -->
+  <div class="flex flex-1">
     <!-- Sidebar -->
     <app-sidebar></app-sidebar>
-  
-    <!-- Main Content -->
-    <main class="flex-1 p-8 bg-green-50 overflow-auto">
+    
+    <!-- Router Outlet -->
+    <main class="flex-1 bg-gray-100 p-6">
+      <app-dashboard-navbar></app-dashboard-navbar>
       <router-outlet></router-outlet>
     </main>
   </div>
-  
+</div>

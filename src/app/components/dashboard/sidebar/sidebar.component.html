@@ -1,4 +1,6 @@
-<aside class="w-64 h-screen bg-gradient-to-b from-green-700 to-green-500 text-white flex flex-col shadow-lg">
+<aside
+  class="w-64 h-screen bg-gradient-to-b from-green-700 to-green-500 text-white flex flex-col shadow-lg"
+>
   <!-- โลโก้ -->
   <div class="m-8 flex justify-center">
     <a routerLink="/dashboard/overview">
@@ -15,7 +17,7 @@
     <ul class="space-y-4">
       <li>
         <a
-          routerLink="/dashboard/overview"
+          (click)="navigateTo('dashboard/overview')"
           routerLinkActive="bg-white text-green-700 font-bold"
           class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
         >
@@ -25,7 +27,7 @@
       </li>
       <li>
         <a
-          routerLink="/dashboard/user-management"
+          (click)="navigateTo('dashboard/user-management')"
           routerLinkActive="bg-white text-green-700 font-bold"
           class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
         >
@@ -35,7 +37,7 @@
       </li>
       <li>
         <a
-          routerLink="/dashboard/production-lines"
+          (click)="navigateTo('dashboard/production-lines')"
           routerLinkActive="bg-white text-green-700 font-bold"
           class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
         >
@@ -45,7 +47,7 @@
       </li>
       <li>
         <a
-          routerLink="/dashboard/machines"
+          (click)="navigateTo('dashboard/machines')"
           routerLinkActive="bg-white text-green-700 font-bold"
           class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
         >
@@ -55,7 +57,7 @@
       </li>
       <li>
         <a
-          routerLink="/dashboard/maintenance-records"
+          (click)="navigateTo('dashboard/maintenance-records')"
           routerLinkActive="bg-white text-green-700 font-bold"
           class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
         >
@@ -65,7 +67,7 @@
       </li>
       <li>
         <a
-          routerLink="/dashboard/reports"
+          (click)="navigateTo('dashboard/reports')"
           routerLinkActive="bg-white text-green-700 font-bold"
           class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
         >
@@ -75,7 +77,7 @@
       </li>
       <li>
         <a
-          routerLink="/dashboard/notifications"
+          (click)="navigateTo('dashboard/notifications')"
           routerLinkActive="bg-white text-green-700 font-bold"
           class="flex items-center space-x-2 hover:bg-green-600 hover:text-white p-2 rounded transition-all duration-300 cursor-pointer"
         >

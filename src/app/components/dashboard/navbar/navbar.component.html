@@ -1,20 +1,42 @@
-<nav class="bg-green-800 text-white p-4 shadow-md">
+
+  <nav class="bg-gradient-to-r from-green-800 via-green-600 to-green-800 text-white p-4 shadow-md">
     <div class="container mx-auto flex justify-between items-center">
-      <a routerLink="/dashboard/overview" class="text-lg font-bold">Dashboard</a>
+      <a routerLink="/dashboard/overview" class="text-lg font-bold hover:text-green-200 transition duration-300">
+        Dashboard
+      </a>
       <ul class="flex space-x-4">
         <li>
-          <a routerLink="/dashboard/overview" class="hover:underline">Overview</a>
+          <a
+            routerLink="/dashboard/overview"
+            class="hover:underline hover:text-green-200 transition duration-300"
+          >
+            Overview
+          </a>
         </li>
         <li>
-          <a routerLink="/dashboard/user-management" class="hover:underline">User Management</a>
+          <a
+            routerLink="/dashboard/user-management"
+            class="hover:underline hover:text-green-200 transition duration-300"
+          >
+            User Management
+          </a>
         </li>
         <li>
-          <a routerLink="/dashboard/reports" class="hover:underline">Reports</a>
+          <a
+            routerLink="/dashboard/reports"
+            class="hover:underline hover:text-green-200 transition duration-300"
+          >
+            Reports
+          </a>
         </li>
         <li>
-          <button (click)="logout()" class="hover:underline">Logout</button>
+          <button
+            (click)="logout()"
+            class="hover:underline hover:text-red-400 transition duration-300"
+          >
+            Logout
+          </button>
         </li>
       </ul>
     </div>
   </nav>
-  

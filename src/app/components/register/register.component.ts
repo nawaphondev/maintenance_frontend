@@ -67,7 +67,7 @@ export class RegisterComponent {
 
       // ตรวจสอบประเภทไฟล์
       if (!file.type.startsWith('image/')) {
-        Swal.fire('ข้อผิดพลาด', 'กรุณาเลือกไฟล์รูปภาพที่ถูกต้อง', 'error');
+        Swal.fire('Error', 'Please select the correct image file', 'error');
         return;
       }
 
@@ -85,22 +85,22 @@ export class RegisterComponent {
   onSubmit(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
-      Swal.fire('ข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วนและถูกต้อง', 'error');
+      Swal.fire('Error', 'Please fill in the information completely and correctly', 'error');
       return;
     }
 
     if (!this.selectedFile) {
-      Swal.fire('ข้อผิดพลาด', 'กรุณาอัปโหลดรูปภาพโปรไฟล์', 'error');
+      Swal.fire('Error', 'Please upload a profile picture', 'error');
       return;
     }
 
     Swal.fire({
-      title: 'ยืนยันการลงทะเบียน',
-      text: 'คุณต้องการลงทะเบียนหรือไม่?',
-      icon: 'warning',
+      title: 'Confirm registration',
+      text: 'Do you want to register?',
+      icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'ยืนยัน',
-      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
         const formData = new FormData();
@@ -116,15 +116,15 @@ export class RegisterComponent {
         if (this.selectedFile) {
           formData.append('profile_picture', this.selectedFile);
         } else {
-          Swal.fire('ข้อผิดพลาด', 'กรุณาอัปโหลดรูปภาพโปรไฟล์', 'error');
+          Swal.fire('Error', 'Please upload a profile picture', 'error');
           return;
         }
 
         this.authService.registerWithAvatar(formData).subscribe(
           (response) => {
             Swal.fire(
-              'ลงทะเบียนสำเร็จ',
-              'ระบบจะนำคุณไปยังหน้าล็อกอิน',
+              'Registration completed',
+              'The system will take you to the login page',
               'success'
             ).then(() => {
               this.router.navigate(['/login']);
@@ -132,8 +132,8 @@ export class RegisterComponent {
           },
           (error) => {
             const errorMessage =
-              error?.error?.error || 'การลงทะเบียนล้มเหลว กรุณาลองใหม่';
-            Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
+              error?.error?.error || 'Registration failed. Please try again';
+            Swal.fire('Error', errorMessage, 'error');
           }
         );
       }

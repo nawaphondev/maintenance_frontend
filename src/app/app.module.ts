@@ -22,7 +22,8 @@ import { MaintenanceRecordsComponent } from './components/dashboard/maintenance-
 import { NotificationsComponent } from './components/dashboard/notifications/notifications.component';
 import { ProductionLinesComponent } from './components/dashboard/production-lines/production-lines.component';
 import { ReportsComponent } from './components/dashboard/reports/reports.component';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DashboardRoutingModule } from './components/dashboard/dashboard-routing.module';
 @NgModule({
   imports: [
     BrowserModule,
@@ -46,6 +47,8 @@ import { ReportsComponent } from './components/dashboard/reports/reports.compone
     SidebarComponent,
     OverviewComponent,
     NgApexchartsModule,
+    BrowserAnimationsModule,
+    DashboardRoutingModule,
     RouterModule.forRoot(routes),
     SweetAlert2Module.forRoot()
   ],

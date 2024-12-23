@@ -15,18 +15,18 @@
       <div>
         <img
           src="https://image.makewebeasy.net/makeweb/m_1920x0/7L4OqPuEK/DefaultData/LOGO_Shizen_png_160x160.png"
-          class="w-32 mx-auto"
+          class="w-32 mx-auto border-gray-200 rounded-md shadow-md"
           alt="Logo"
         />
       </div>
       <div class="mt-12 flex flex-col items-center">
-        <h1 class="text-2xl xl:text-3xl font-extrabold">ลงทะเบียน</h1>
+        <h1 class="text-2xl xl:text-3xl font-extrabold">Register Account</h1>
 
         <!-- Avatar Upload Section -->
         <div class="flex flex-col items-center space-y-4 mt-6">
           <label for="file-upload" class="cursor-pointer">
             <img
-              [src]="imageUrl ? imageUrl : 'https://via.placeholder.com/150'"
+              [src]="imageUrl ? imageUrl : 'https://i.imgur.com/wncXXJa.png'"
               alt="User avatar"
               class="h-32 w-32 rounded-full border-2 border-primary object-cover"
             />
@@ -38,7 +38,7 @@
             accept="image/*"
             class="hidden"
           />
-          <p class="text-sm">คลิ๊กเพื่ออัปโหลดรูปภาพ</p>
+          <p class="text-sm">Click to upload a photo</p>
         </div>
 
         <!-- Registration Form -->
@@ -55,13 +55,12 @@
                 class="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                 type="text"
                 formControlName="username"
-                placeholder="ชื่อผู้ใช้ *"
-                aria-label="ชื่อผู้ใช้"
+                placeholder="Username *"
                 required
               />
             </div>
             <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="text-red-500 text-sm mt-1">
-              กรุณากรอกชื่อผู้ใช้ที่มีความยาวอย่างน้อย 3 ตัวอักษร
+              Please enter a username that is at least 3 characters long
             </div>
 
             <!-- Email Field -->
@@ -71,12 +70,12 @@
                 class="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
                 type="email"
                 formControlName="email"
-                placeholder="อีเมล *"
+                placeholder="Email *"
                 required
               />
             </div>
             <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
-              กรุณากรอกอีเมลที่ถูกต้อง
+              Please enter a valid email address
             </div>
 
             <!-- Password Field -->
@@ -86,7 +85,7 @@
                 [type]="passwordVisible ? 'text' : 'password'"
                 formControlName="password"
                 class="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                placeholder="รหัสผ่าน *"
+                placeholder="Password *"
                 required
               />
               <button
@@ -98,7 +97,7 @@
               </button>
             </div>
             <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
-              รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร
+              Password must be at least 8 characters long
             </div>
 
             <!-- Confirm Password Field -->
@@ -108,7 +107,7 @@
                 [type]="confirmPasswordVisible ? 'text' : 'password'"
                 formControlName="confirmPassword"
                 class="w-full px-4 py-3 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                placeholder="ยืนยันรหัสผ่าน *"
+                placeholder="Confirm Password *"
                 required
               />
               <button
@@ -120,7 +119,7 @@
               </button>
             </div>
             <div *ngIf="registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched" class="text-red-500 text-sm mt-1">
-              รหัสผ่านและการยืนยันรหัสผ่านไม่ตรงกัน
+              Password and password confirmation do not match
             </div>
 
             <!-- Submit Button -->
@@ -129,7 +128,7 @@
               [disabled]="registerForm.invalid"
             >
               <span class="material-icons">person_add</span>
-              <span class="ml-3">ยืนยันการลงทะเบียน</span>
+              <span class="ml-3">Register</span>
             </button>
           </div>
         </form>
@@ -137,7 +136,7 @@
         <!-- Link to Login -->
         <div class="mt-6 flex justify-center items-center">
           <a routerLink="/login" class="text-sm text-gray-700 hover:underline hover:text-green-500 cursor-pointer">
-            ฉันมีบัญชีผู้ใช้อยู่แล้ว / เข้าสู่ระบบ
+            I already have an account / Log in
           </a>
         </div>
       </div>

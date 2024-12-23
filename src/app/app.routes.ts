@@ -8,9 +8,9 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'login', component: LoginComponent, data: { animation: 'login' } },
+  { path: 'register', component: RegisterComponent, data: { animation: 'register' } },
+  { path: 'reset-password', component: ResetPasswordComponent, data: { animation: 'reset-password' } },
 
   // Dashboard Routing (Lazy Loading)
   {
@@ -19,7 +19,7 @@ export const routes: Routes = [
       import('./components/dashboard/dashboard-routing.module').then(
         (m) => m.DashboardRoutingModule
       ),
-    canActivate: [AuthGuard],
+    canActivate: [AuthGuard], data: { animation: 'dashboard' },
   },
   // 404 Not Found Page
   { path: '**', component: NotFoundComponent },

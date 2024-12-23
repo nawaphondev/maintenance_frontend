@@ -46,8 +46,8 @@ export class LoginComponent {
         (response) => {
           localStorage.setItem('token', response.token);
           Swal.fire(
-            'เข้าสู่ระบบสำเร็จ',
-            'เมื่อคลิ๊ก "OK" ระบบจะนำคุณไปยัง Dashboard',
+            'Login Successful',
+            'Click "OK" to go to the Dashboard',
             'success'
           ).then(() => {
             this.router.navigate(['/dashboard']);
@@ -55,18 +55,18 @@ export class LoginComponent {
         },
         (error) => {
           console.error('Login error:', error); // Debugging
-          let errorMessage = 'เข้าสู่ระบบไม่สำเร็จ กรุณาตรวจสอบข้อมูล';
+          let errorMessage = 'Login failed. Please check your information';
           if (error.status === 400 && error.error) {
             errorMessage =
               typeof error.error === 'string'
                 ? error.error
                 : error.error.message || errorMessage;
           }
-          Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
+          Swal.fire('Error', errorMessage, 'error');
         }
       );
     } else {
-      Swal.fire('ข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ครบถ้วน', 'error');
+      Swal.fire('Login failed', 'Please fill in all information completely', 'error');
     }
   }
 }

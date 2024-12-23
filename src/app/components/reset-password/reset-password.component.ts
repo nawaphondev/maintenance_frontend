@@ -31,7 +31,7 @@ export class ResetPasswordComponent {
         this.userId = decodedToken.userId;
       } else {
         console.error('Invalid token');
-        Swal.fire('ข้อผิดพลาด', 'ไม่สามารถยืนยันตัวตนได้ กรุณาเข้าสู่ระบบใหม่', 'error');
+        Swal.fire('Error', 'Unable to verify your identity. Please log in again', 'error');
       }
     }
   }
@@ -65,12 +65,12 @@ export class ResetPasswordComponent {
   onSubmit(): void {
     if (this.resetPasswordForm.invalid) {
       // แสดงข้อความแจ้งเตือนเมื่อฟอร์มไม่ถูกต้อง
-      Swal.fire('ข้อผิดพลาด', 'กรุณากรอกข้อมูลให้ถูกต้อง', 'error');
+      Swal.fire('Error', 'Please fill in the information correctly', 'error');
       return;
     }
 
     if (!this.userId) {
-      Swal.fire('ข้อผิดพลาด', 'ไม่สามารถยืนยันตัวตนได้ กรุณาเข้าสู่ระบบใหม่', 'error');
+      Swal.fire('Error', 'Unable to verify your identity. Please log in again', 'error');
       return;
     }
 
@@ -78,27 +78,27 @@ export class ResetPasswordComponent {
 
     // แสดงคำยืนยันก่อนเปลี่ยนรหัสผ่าน
     Swal.fire({
-      title: 'ยืนยันการเปลี่ยนรหัสผ่าน?',
-      text: 'คุณต้องการเปลี่ยนรหัสผ่านใหม่หรือไม่?',
+      title: 'Confirm password change?',
+      text: 'Would you like to change your password?',
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: 'ใช่, เปลี่ยนรหัสผ่าน',
-      cancelButtonText: 'ยกเลิก',
+      confirmButtonText: 'Yes, change your password.',
+      cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
         // เรียกใช้บริการ authService เพื่อเปลี่ยนรหัสผ่าน
         this.authService.resetPassword(this.userId as string, oldPassword, newPassword).subscribe(
           () => {
             // แสดงข้อความสำเร็จเมื่อเปลี่ยนรหัสผ่านได้สำเร็จ
-            Swal.fire('สำเร็จ', 'รหัสผ่านของคุณได้ถูกเปลี่ยนเรียบร้อยแล้ว', 'success');
+            Swal.fire('Success', 'Your password has been successfully changed', 'success');
           },
           (error) => {
             // จัดการข้อผิดพลาดและแสดงข้อความแจ้งเตือนเมื่อไม่สามารถเปลี่ยนรหัสผ่านได้
-            let errorMessage = 'ไม่สามารถเปลี่ยนรหัสผ่านได้ กรุณาลองใหม่';
+            let errorMessage = 'Unable to change password. Please try again';
             if (error && error.error) {
               errorMessage = typeof error.error === 'string' ? error.error : error.error.message || errorMessage;
             }
-            Swal.fire('ข้อผิดพลาด', errorMessage, 'error');
+            Swal.fire('Error', errorMessage, 'error');
           }
         );
       }

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -7,6 +8,7 @@ import Swal from 'sweetalert2';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
   standalone: true,
+  imports: [CommonModule],
 })
 export class NavbarComponent {
   constructor(private router: Router) {}

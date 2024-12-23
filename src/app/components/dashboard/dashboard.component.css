@@ -1,4 +1,41 @@
-main {
-    overflow-y: auto;
-  }
-  
+/* Sidebar Animation */
+.fixed {
+  position: fixed;
+}
+
+.bg-gradient-to-b {
+  background: linear-gradient(to bottom, #2d3748, #1a202c);
+}
+
+.w-64 {
+  width: 16rem;
+}
+
+.transition-transform {
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Backdrop Animation */
+.bg-opacity-50 {
+  background: rgba(0, 0, 0, 0.5);
+  transition: opacity 0.5s ease-in-out;
+}
+
+.z-30 {
+  z-index: 30;
+}
+
+/* Button Animation */
+button {
+  z-index: 50;
+  transition: transform 0.3s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.1); /* เพิ่ม Animation เมื่อ Hover */
+}
+
+/* Smooth Opacity for Main Content */
+.transition-opacity {
+  transition: opacity 0.5s ease-in-out;
+}

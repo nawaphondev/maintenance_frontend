@@ -1,42 +1,23 @@
-
-  <nav class="bg-gradient-to-r from-green-800 via-green-600 to-green-800 text-white p-4 shadow-md">
-    <div class="container mx-auto flex justify-between items-center">
-      <a routerLink="/dashboard/overview" class="text-lg font-bold hover:text-green-200 transition duration-300">
-        Dashboard
-      </a>
-      <ul class="flex space-x-4">
-        <li>
-          <a
-            routerLink="/dashboard/overview"
-            class="hover:underline hover:text-green-200 transition duration-300"
-          >
-            Overview
-          </a>
-        </li>
-        <li>
-          <a
-            routerLink="/dashboard/user-management"
-            class="hover:underline hover:text-green-200 transition duration-300"
-          >
-            User Management
-          </a>
-        </li>
-        <li>
-          <a
-            routerLink="/dashboard/reports"
-            class="hover:underline hover:text-green-200 transition duration-300"
-          >
-            Reports
-          </a>
-        </li>
-        <li>
-          <button
-            (click)="logout()"
-            class="hover:underline hover:text-red-400 transition duration-300"
-          >
-            Logout
-          </button>
-        </li>
-      </ul>
+<nav class="bg-gradient-to-r from-white to-green-500 text-white p-4 shadow-md">
+  <div class="container mx-auto flex justify-between items-center">
+    <a routerLink="/" class="text-lg font-bold text-green-700">Dashboard</a>
+    <div class="flex items-center gap-4">
+      <!-- User Status -->
+      <div class="flex items-center gap-2">
+        <img
+          [src]="currentUser?.profile_picture || 'https://via.placeholder.com/50'"
+          alt="Profile Picture"
+          class="h-10 w-10 rounded-full object-cover border-2 border-white"
+        />
+        <span class="text-green-700">{{ currentUser?.username || currentUser?.email }}</span>
+      </div>
+      <!-- Logout Button -->
+      <button
+        (click)="logout()"
+        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded shadow"
+      >
+        Logout
+      </button>
     </div>
-  </nav>
+  </div>
+</nav>

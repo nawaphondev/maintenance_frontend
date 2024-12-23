@@ -1,244 +1,187 @@
 <div class="container mx-auto p-5">
-  <!-- Title -->
-  <h1 class="text-3xl font-bold mb-5 text-center">User Management</h1>
+  <div class="bg-white p-6 rounded-lg shadow-lg">
+    <!-- Title -->
+    <h1 class="text-3xl font-bold mb-5 text-center">User Management</h1>
 
-  <!-- Add Button -->
-  <div class="flex justify-end mb-4">
-    <button
-      class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow flex items-center"
-      (click)="openAddPopup()"
-    >
-      <span class="material-icons mr-2">person_add</span>
-      Add new user
-    </button>
-  </div>
+    <!-- Add Button -->
+    <div class="flex justify-end mb-4">
+      <button
+        class="bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 text-white px-4 py-2 rounded-lg shadow transition-transform transform hover:scale-105 flex items-center"
+        (click)="openAddPopup()"
+      >
+        <span class="material-icons mr-2">person_add</span>
+        Add new user
+      </button>
+    </div>
 
-  <!-- User Table -->
-  <div class="overflow-x-auto shadow-md rounded-lg">
-    <table class="w-full bg-white border-collapse border border-gray-200">
-      <thead>
-        <tr class="bg-gray-200 text-gray-600">
-          <th class="py-2 px-4 border">ID</th>
-          <th class="py-2 px-4 border">Profile Picture</th>
-          <th class="py-2 px-4 border">Username</th>
-          <th class="py-2 px-4 border">Email</th>
-          <th class="py-2 px-4 border">Level</th>
-          <th class="py-2 px-4 border">Status</th>
-          <th class="py-2 px-4 border">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="
-            let user of users
-              | slice : (currentPage - 1) * pageSize : currentPage * pageSize
-          "
-        >
-          <td class="py-2 px-2 border text-center">{{ user.id }}</td>
-          <td class="py-2 px-2 border flex justify-center">
-            <img
-              [src]="user.profile_picture || 'https://via.placeholder.com/50'"
-              class="h-12 w-12 rounded-full object-cover"
-            />
-          </td>
-          <td class="py-2 px-3 border">{{ user.username }}</td>
-          <td class="py-2 px-3 border">{{ user.email }}</td>
-          <td class="py-2 px-3 border">{{ user.user_level }}</td>
-          <td class="py-2 px-2 border">{{ user.status }}</td>
-          <td class="py-2 px-4 border text-center">
-            <div class="flex justify-center space-x-2">
+    <!-- User Table -->
+    <div class="overflow-x-auto shadow-md rounded-lg">
+      <table class="w-full bg-white border-collapse border border-gray-200">
+        <thead>
+          <tr class="bg-gray-100 text-gray-600 text-sm">
+            <th class="py-2 px-4 border">ID</th>
+            <th class="py-2 px-4 border">Profile Picture</th>
+            <th class="py-2 px-4 border">Username</th>
+            <th class="py-2 px-4 border">Email</th>
+            <th class="py-2 px-4 border">Level</th>
+            <th class="py-2 px-4 border">Status</th>
+            <th class="py-2 px-4 border">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let user of users"
+            class="text-sm hover:bg-gray-50 transition-colors"
+          >
+            <td class="py-2 px-4 border text-center">{{ user.id }}</td>
+            <td class="py-2 px-4 border flex justify-center">
+              <img
+                [src]="user.profile_picture || 'https://via.placeholder.com/50'"
+                class="h-12 w-12 rounded-full object-cover"
+              />
+            </td>
+            <td class="py-2 px-4 border">{{ user.username }}</td>
+            <td class="py-2 px-4 border">{{ user.email }}</td>
+            <td class="py-2 px-4 border">{{ user.user_level }}</td>
+            <td
+              class="py-2 px-4 border text-center"
+              [ngClass]="{
+                'text-green-500 font-bold': user.status === 'Active',
+                'text-red-500 font-bold': user.status === 'Inactive'
+              }"
+            >
+              {{ user.status }}
+            </td>
+            <td
+              class="py-2 px-4 border flex-row md:flex-row gap-2 justify-center items-center"
+            >
+              <!-- Edit Button -->
               <button
-                class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded shadow flex items-center"
+                class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded-lg shadow flex items-center mb-4"
                 (click)="openEditPopup(user)"
               >
                 <span class="material-icons mr-1">edit</span>
                 Edit
               </button>
+              <!-- Delete Button -->
               <button
-                class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded shadow flex items-center"
+                class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded-lg shadow flex items-center"
                 (click)="deleteUser(user.id)"
               >
                 <span class="material-icons mr-1">delete</span>
                 Delete
               </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <!-- Pagination Controls -->
-  <div class="flex justify-center mt-4 space-x-2">
-    <button
-      class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center"
-      (click)="previousPage()"
-      [disabled]="currentPage === 1"
-    >
-      <span class="material-icons mr-1">chevron_left</span>
-      Previous
-    </button>
-    <span class="text-gray-600 font-semibold py-1">
-      Page {{ currentPage }} / {{ totalPages }}
-    </span>
-    <button
-      class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center"
-      (click)="nextPage()"
-      [disabled]="currentPage === totalPages"
-    >
-      Next
-      <span class="material-icons ml-1">chevron_right</span>
-    </button>
-  </div>
-</div>
-
-<!-- Popup Container -->
-<div
-  *ngIf="showModal"
-  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
->
+  <!-- Popup Modal -->
   <div
-    class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg"
+    *ngIf="showModal"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
   >
-    <!-- Title -->
-    <h2 class="text-2xl font-bold mb-6 text-center">
-      {{ editMode ? "Edit User" : "Add New User" }}
-    </h2>
-
-    <!-- Form -->
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Username -->
-        <div>
-          <label class="block mb-1 text-gray-700">Username</label>
-          <input
-            formControlName="username"
-            placeholder="Username"
-            required
-            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+      <h2 class="text-2xl font-bold mb-6 text-center">
+        {{ editMode ? "Edit User" : "Add New User" }}
+      </h2>
+      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block mb-1 text-gray-700">Username</label>
+            <input
+              formControlName="username"
+              placeholder="Username"
+              required
+              class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-gray-700">Email</label>
+            <input
+              formControlName="email"
+              placeholder="Email"
+              type="email"
+              required
+              class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div *ngIf="!editMode">
+            <label class="block mb-1 text-gray-700">Password</label>
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Password"
+              class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div *ngIf="!editMode">
+            <label class="block mb-1 text-gray-700">Confirm Password</label>
+            <input
+              [type]="confirmPasswordVisible ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              placeholder="Confirm Password"
+              class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label class="block mb-1 text-gray-700">User Level</label>
+            <select
+              formControlName="user_level"
+              required
+              class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option disabled selected value="">Select User Level</option>
+              <option value="Admin">Admin</option>
+              <option value="User">User</option>
+              <option value="Super User">Super User</option>
+            </select>
+          </div>
+          <div>
+            <label class="block mb-1 text-gray-700">Status</label>
+            <select
+              formControlName="status"
+              required
+              class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option disabled selected value="">Select Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
         </div>
-
-        <!-- Email -->
-        <div>
-          <label class="block mb-1 text-gray-700">Email</label>
+        <div class="mt-4">
+          <label class="block mb-1 text-gray-700">Profile Picture</label>
           <input
-            formControlName="email"
-            placeholder="Email"
-            type="email"
-            required
-            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            type="file"
+            (change)="onFileSelected($event)"
+            class="w-full p-2 border rounded"
           />
+          <div class="flex justify-center mt-2">
+            <img
+              [src]="imageUrl || 'https://via.placeholder.com/150'"
+              class="h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
+            />
+          </div>
         </div>
-
-        <!-- Password -->
-        <div class="relative">
-          <label class="block mb-1 text-gray-700">Password</label>
-          <input
-            [type]="passwordVisible ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="Password"
-            required
-            class="w-full p-2 pr-10 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <!-- Toggle Visibility -->
+        <div class="mt-6 text-center flex justify-around">
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow"
+          >
+            Save
+          </button>
           <button
             type="button"
-            class="absolute inset-y-0 right-3 flex items-center text-gray-500 focus:outline-none"
-            (click)="togglePasswordVisibility('password')"
+            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow"
+            (click)="closePopup()"
           >
-            <span class="material-icons">
-              {{ passwordVisible ? 'visibility' : 'visibility_off' }}
-            </span>
+            Close
           </button>
         </div>
-
-        <!-- Confirm Password -->
-        <div class="relative">
-          <label class="block mb-1 text-gray-700">Confirm Password</label>
-          <input
-            [type]="confirmPasswordVisible ? 'text' : 'password'"
-            formControlName="confirmPassword"
-            placeholder="Confirm Password"
-            required
-            class="w-full p-2 pr-10 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <!-- Toggle Visibility -->
-          <button
-            type="button"
-            class="absolute inset-y-0 right-3 flex items-center text-gray-500 focus:outline-none"
-            (click)="togglePasswordVisibility('confirmPassword')"
-          >
-            <span class="material-icons">
-              {{ confirmPasswordVisible ? 'visibility' : 'visibility_off' }}
-            </span>
-          </button>
-        </div>
-
-        <!-- User Level -->
-        <div>
-          <label class="block mb-1 text-gray-700">User Level</label>
-          <select
-            formControlName="user_level"
-            required
-            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option disabled selected value="">Select User Level</option>
-            <option value="Admin">Admin</option>
-            <option value="User">User</option>
-            <option value="Super User">Super User</option>
-          </select>
-        </div>
-
-        <!-- Status -->
-        <div>
-          <label class="block mb-1 text-gray-700">Status</label>
-          <select
-            formControlName="status"
-            required
-            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option disabled selected value="">Select User Status</option>
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- File Upload -->
-      <div class="mt-4">
-        <label class="block mb-1 text-gray-700">Profile Picture</label>
-        <input
-          type="file"
-          (change)="onFileSelected($event)"
-          class="w-full p-2 border rounded"
-        />
-        <div class="flex justify-center mt-2">
-          <img
-            [src]="imageUrl || 'https://via.placeholder.com/150'"
-            class="h-24 w-24 rounded-full border-2 border-gray-300 object-cover"
-          />
-        </div>
-      </div>
-
-      <!-- Submit Button -->
-      <div class="mt-6 text-center">
-        <button
-          type="submit"
-          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow"
-        >
-          Save changes
-        </button>
-      </div>
-    </form>
-
-    <!-- Close Button -->
-    <button
-      class="mt-4 text-red-500 w-full text-center"
-      (click)="showModal = false"
-    >
-      Close
-    </button>
+      </form>
+    </div>
   </div>
 </div>
-

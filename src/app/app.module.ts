@@ -24,6 +24,7 @@ import { ProductionLinesComponent } from './components/dashboard/production-line
 import { ReportsComponent } from './components/dashboard/reports/reports.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardRoutingModule } from './components/dashboard/dashboard-routing.module';
+import { NavbarComponent } from './components/dashboard/navbar/navbar.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -49,6 +50,7 @@ import { DashboardRoutingModule } from './components/dashboard/dashboard-routing
     NgApexchartsModule,
     BrowserAnimationsModule,
     DashboardRoutingModule,
+    NavbarComponent,
     RouterModule.forRoot(routes),
     SweetAlert2Module.forRoot()
   ],

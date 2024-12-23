@@ -1,15 +1,29 @@
-<div class="flex flex-col h-screen">
-  <!-- Navbar -->
+<div class="relative h-screen flex">
+  <!-- Sidebar -->
+  <app-sidebar
+  class="fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-green-700 to-green-500 text-white shadow-lg transform transition-transform duration-500 ease-in-out z-40"
+  [ngClass]="{ '-translate-x-full': !isSidebarVisible, 'translate-x-0': isSidebarVisible }"
+  ></app-sidebar>
   
-  <!-- Main Content -->
-  <div class="flex flex-1">
-    <!-- Sidebar -->
-    <app-sidebar></app-sidebar>
-    
-    <!-- Router Outlet -->
-    <main class="flex-1 bg-gray-100 p-6">
-      <app-dashboard-navbar></app-dashboard-navbar>
-      <router-outlet></router-outlet>
-    </main>
+  <!-- Sidebar Toggle Button -->
+  <button
+  class="fixed top-4 left-4 z-50 bg-green-600 hover:bg-green-700 text-white p-2 rounded-full shadow-lg transition-transform duration-300 ease-in-out"
+  (click)="toggleSidebar()"
+  >
+  <span *ngIf="!isSidebarVisible" class="material-icons">menu</span>
+  <span *ngIf="isSidebarVisible" class="material-icons">close</span>
+</button>
+
+<!-- Main Content -->
+<div class="flex-1 bg-gray-100 overflow-y-auto transition-opacity duration-500 ease-in-out">
+  <app-navbar></app-navbar>
+  <router-outlet></router-outlet>
   </div>
+
+  <!-- Backdrop -->
+  <div
+    *ngIf="isSidebarVisible"
+    class="fixed inset-0 bg-black bg-opacity-50 z-30 transition-opacity duration-500 ease-in-out"
+    (click)="toggleSidebar()"
+  ></div>
 </div>

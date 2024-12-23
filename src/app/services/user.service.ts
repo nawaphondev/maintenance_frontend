@@ -17,8 +17,21 @@ export class UserService {
     });
   }
 
-  getUserById(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`);
+  getCurrentUser(): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http.get<any>(`${this.apiUrl}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+  }
+
+  // getUserById(id: number): Observable<any> {
+  //   return this.http.get(`${this.apiUrl}/${id}`);
+  // }
+
+  getUserById(userId: number): Observable<any> {
+    return this.http.get<any>(`/api/users/${userId}`);
   }
 
   // อัปเดตข้อมูลผู้ใช้
@@ -30,11 +43,13 @@ export class UserService {
 
     return this.http.put(`${this.apiUrl}/${id}`, formData, { headers });
   }
-
-  createUser(user: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/create`, user, {
-      headers: this.getAuthHeaders(),
+  createUser(formData: FormData): Observable<any> {
+    const token = localStorage.getItem('token'); // ดึง Token จาก Local Storage
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`, // ใส่ Token ใน Header
     });
+
+    return this.http.post(`${this.apiUrl}/create`, formData, { headers });
   }
 
   deleteUser(id: number): Observable<any> {

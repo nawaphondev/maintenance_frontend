@@ -1,17 +1,6 @@
+/* ตรวจสอบว่าไม่มี display: none; หรือ visibility: hidden */
 nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    width: 100%;
-  }
-  
-  a, button {
-    text-decoration: none;
-    color: white;
-    cursor: pointer;
-  }
-  
-  a:hover, button:hover {
-    text-decoration: underline;
-  }
-  
+  display: block;
+  visibility: visible;
+  z-index: 50; /* ให้อยู่ด้านบน */
+}
